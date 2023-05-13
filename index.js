@@ -14,7 +14,7 @@ const path = require('path');
 // Define route for generating text
 app.get('/generate-text', async (req, res) => {
  // Get prompt from query string
- const prompt = 'Create me a holiday itinerary for 3 days at ' + req.query.prompt;
+ const prompt = 'Who are you?' || req.query.prompt;
 
  // Set up GPT-3 parameters
  const completion = await openai.createChatCompletion({
