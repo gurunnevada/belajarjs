@@ -27,9 +27,6 @@ app.get('/generate-text', async (req, res) => {
  res.send(text);
 });
 
-// Serve HTML file
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Start server
 const port = process.env.PORT || 3000;
 
