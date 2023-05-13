@@ -28,12 +28,11 @@ app.get('/generate-text', async (req, res) => {
 });
 
 // Serve HTML file
-app.get('/', (req, res) => {
-   res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Start server
-app.listen(3000, () => {
-    console.log('Server is listening on port 3000');
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });
-   
