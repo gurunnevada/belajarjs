@@ -12,7 +12,7 @@ const openai = new OpenAIApi(configuration);
 
 const path = require('path');
 
-const port = 8080;
+const port = process.env.PORT || 3000;
 
 // Define route for generating text
 app.get('/generate-text', async (req, res) => {
