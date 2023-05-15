@@ -10,16 +10,27 @@
      <input type="text" id="prompt" name="prompt"><br><br>
      <button type="submit">Generate Text</button>
    </form>
-   <div id="output"></div>
+   <div id="output" style="white-space: pre-line"></div>
    <script>
      const form = document.querySelector('form');
      const output = document.querySelector('#output');
      form.addEventListener('submit', async (event) => {
        event.preventDefault();
+       output.innerHTML = "";
        const formData = new FormData(form);
        const response = await fetch(`/generate-text?prompt=${formData.get('prompt')}`);
-       const text = await response.text();
-       output.innerHTML = text;
+       
+       // Read the response as a stream of data
+       const reader = response.body.getReader();
+       const decoder = new TextDecoder("utf-8");
+       while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+         break;
+        }
+        output.innerHTML += decoder.decode(value);
+        console.log(output.innerHTML);
+       }
      });
    </script>
  </body>

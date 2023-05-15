@@ -16,19 +16,40 @@ const port = process.env.PORT || 3000;
 
 // Define route for generating text
 app.get('/generate-text', async (req, res) => {
- // Get prompt from query string
- const prompt = req.query.prompt || 'Hello, what is your name?';
+  // Get prompt from query string
+  const prompt = req.query.prompt || 'Hello, what is your name?';
 
- // Set up GPT-3.5 parameters
- const completion = await openai.createChatCompletion({
-   model: "gpt-3.5-turbo",
-   temperature: 1,
-   max_tokens: 2048,
-   messages: [{role: "user", content: prompt}]
- })
- console.log(completion);
- const text = completion.data.choices[0].message.content.trim();
- res.send(text);
+  // Set up GPT-3.5 parameters
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    temperature: 1,
+    max_tokens: 2048,
+    messages: [{role: "user", content: prompt}],
+    stream: true
+  }, { responseType: 'stream' });
+  
+  completion.data.on('data', data => {
+    const lines = data.toString().split('\n').filter(line => line.trim() !== '');
+    for (const line of lines) {
+        const message = line.replace(/^data: /, '');
+        if (message === '[DONE]') {
+          res.end();
+          return; // Stream finished
+        }
+        try {
+          const parsed = JSON.parse(message);
+          process.stdout.write(parsed.choices[0].delta.content);
+          res.write(parsed.choices[0].delta.content);
+        } catch(error) {
+          //console.error('Could not JSON parse stream message', message, error);
+        }
+    }
+  });
+
+  res.writeHead(200, {
+    'Content-Type': 'text/plain',
+    'Transfer-Encoding': 'chunked'
+  });
 });
 
 // Serve HTML file
