@@ -14,10 +14,10 @@
    <script>
      const form = document.querySelector('form');
      const output = document.querySelector('#output');
-     output.innerHTML = "this is output";
+     output.innerText = "";
      form.addEventListener('submit', async (event) => {
        event.preventDefault();
-       output.innerHTML = "";
+       output.innerText = "";
        const formData = new FormData(form);
        const response = await fetch(`/generate-text?prompt=${formData.get('prompt')}`);
        
@@ -25,13 +25,13 @@
        const reader = response.body.getReader();
        const decoder = new TextDecoder("utf-8");
        try {
-       while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-         break;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+          break;
+          }
+          output.innerText += decoder.decode(value);
         }
-        output.innerHTML += decoder.decode(value);
-       }
       } catch {
         console.log(error);
       }
