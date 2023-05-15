@@ -15,6 +15,7 @@
      const form = document.querySelector('form');
      const output = document.querySelector('#output');
      output.innerText = "";
+     try {
      form.addEventListener('submit', async (event) => {
        event.preventDefault();
        output.innerText = "";
@@ -24,18 +25,20 @@
        // Read the response as a stream of data
        const reader = response.body.getReader();
        const decoder = new TextDecoder("utf-8");
-       try {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-          break;
-          }
-          output.innerText += decoder.decode(value);
+       
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+        break;
         }
-      } catch {
-        console.log(error);
+        output.innerText += decoder.decode(value);
       }
-     });
+     })
+    } catch(error) {
+      console.error("Error:", error);
+      outputText.innerText = "Error occurred while generating.";
+    };
+    
    </script>
  </body>
 </html>
