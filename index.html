@@ -23,14 +23,17 @@
        // Read the response as a stream of data
        const reader = response.body.getReader();
        const decoder = new TextDecoder("utf-8");
+       try {
        while (true) {
         const { done, value } = await reader.read();
         if (done) {
          break;
         }
         output.innerHTML += decoder.decode(value);
-        console.log(output.innerHTML);
        }
+      } catch {
+        console.log(error);
+      }
      });
    </script>
  </body>

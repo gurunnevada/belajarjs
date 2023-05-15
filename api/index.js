@@ -27,7 +27,6 @@ app.get('/generate-text', async (req, res) => {
     messages: [{role: "user", content: prompt}],
     stream: true
   }, { responseType: 'stream' });
-  
   completion.data.on('data', data => {
     const lines = data.toString().split('\n').filter(line => line.trim() !== '');
     for (const line of lines) {
