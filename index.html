@@ -14,6 +14,7 @@
    <script>
      const form = document.querySelector('form');
      const output = document.querySelector('#output');
+     output.innerHTML = "this is output";
      form.addEventListener('submit', async (event) => {
        event.preventDefault();
        output.innerHTML = "";
