@@ -14,10 +14,6 @@ const path = require('path');
 
 const port = process.env.PORT || 3000;
 
-export const config = {
-  runtime: "edge",
-};
-
 // Define route for generating text
 app.get('/generate-text', async (req, res) => {
   // Get prompt from query string
