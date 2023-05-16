@@ -25,14 +25,20 @@
        // Read the response as a stream of data
        const reader = response.body.getReader();
        const decoder = new TextDecoder("utf-8");
-       
-      while (true) {
+       console.log("masuk 1");
+       while (true) {
+        console.log("masuk 2");
         const { done, value } = await reader.read();
         if (done) {
-        break;
+         break;
         }
-        output.innerText += decoder.decode(value);
-      }
+        const content = decoder.decode(value)
+        if (content) {
+          console.log("masuk 3");
+          output.innerText += content;
+        }
+        console.log(output.innerText);
+       }
      })
     } catch(error) {
       console.error("Error:", error);
