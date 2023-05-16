@@ -16,6 +16,11 @@ const port = process.env.PORT || 3000;
 
 // Define route for generating text
 app.get('/generate-text', async (req, res) => {
+  res.writeHead(200, {
+    'Content-Type': 'text/plain',
+    'Transfer-Encoding': 'chunked'
+  });
+  
   // Get prompt from query string
   const prompt = req.query.prompt || 'Hello, what is your name?';
 
@@ -44,19 +49,4 @@ app.get('/generate-text', async (req, res) => {
         }
     }
   });
-
-  res.writeHead(200, {
-    'Content-Type': 'text/plain',
-    'Transfer-Encoding': 'chunked'
-  });
-});
-
-// Serve HTML file
-app.get('/', (req, res) => {
-   res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Start server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
 });
