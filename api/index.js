@@ -50,3 +50,13 @@ app.get('/generate-text', async (req, res) => {
     }
   });
 });
+
+// Serve HTML file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Start server
+app.listen(port, () => {
+ console.log(`Server listening at http://localhost:${port}`);
+});
