@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 // Define route for generating text
 app.get('/generate-text', async (req, res) => {
   res.writeHead(200, {
-    'Content-Type': 'text/plain',
+    'Content-Type': 'text/html; charset:utf-8',
     'Transfer-Encoding': 'chunked'
   });
   
